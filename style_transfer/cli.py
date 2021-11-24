@@ -130,7 +130,7 @@ class Callback:
                 if self.web_interface is not None:
                     self.web_interface.put_done()
         elif iterate.i % self.args.save_every == 0:
-            save_image(self.args.output, self.st.get_image(self.image_type))
+            save_image(self.args.output + str(iterate.i) + ".png", self.st.get_image(self.image_type))
 
     def close(self):
         if self.progress is not None:
