@@ -125,7 +125,7 @@ class Callback:
         if iterate.i == iterate.i_max:
             self.progress.close()
             if max(iterate.w, iterate.h) != self.args.end_scale:
-                save_image(self.args.output, self.st.get_image(self.image_type))
+                save_image(self.args.output  + str(iterate.i) + ".png", self.st.get_image(self.image_type))
             else:
                 if self.web_interface is not None:
                     self.web_interface.put_done()
