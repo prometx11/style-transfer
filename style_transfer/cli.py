@@ -111,10 +111,12 @@ class Callback:
         self.image_type = image_type
         self.web_interface = web_interface
         self.iterates = []
+        self.counter = 0
         self.progress = None
 
     def __call__(self, iterate):
         self.iterates.append(asdict(iterate))
+        self.counter += 1
         if iterate.i == 1:
             self.progress = tqdm(total=iterate.i_max, dynamic_ncols=True)
         msg = 'Size: {}x{}, iteration: {}, loss: {:g}'
@@ -125,12 +127,12 @@ class Callback:
         if iterate.i == iterate.i_max:
             self.progress.close()
             if max(iterate.w, iterate.h) != self.args.end_scale:
-                save_image(self.args.output  + str(iterate.i) + ".png", self.st.get_image(self.image_type))
+                save_image(self.args.output + '-' + str(self.counter) + ".png", self.st.get_image(self.image_type))
             else:
                 if self.web_interface is not None:
                     self.web_interface.put_done()
         elif iterate.i % self.args.save_every == 0:
-            save_image(self.args.output + str(iterate.i) + ".png", self.st.get_image(self.image_type))
+            save_image(self.args.output + '-' +  str(self.counter) + ".png", self.st.get_image(self.image_type))
 
     def close(self):
         if self.progress is not None:
@@ -261,8 +263,9 @@ def main():
         pass
 
     output_image = st.get_image(image_type)
-    if output_image is not None:
-        save_image(args.output + ".png", output_image)
+    if output_image is not None:  
+        print(f'{callback.iterates}')         
+        save_image(f'{args.output}-{callback.counter +1}.png', output_image)
     with open('trace.json', 'w') as fp:
         json.dump(callback.get_trace(), fp, indent=4)
 
