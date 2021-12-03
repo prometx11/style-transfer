@@ -347,7 +347,9 @@ class StyleTransfer:
 
         # Stylize the image at successively finer scales, each greater by a factor of sqrt(2).
         # This differs from the scheme given in Gatys et al. (2016).
-        for scale in scales:
+        for index, scale in enumerate(scales):
+            print(f'Current Index of scale {index}|{scale}')
+            
             if self.devices[0].type == 'cuda':
                 torch.cuda.empty_cache()
 
@@ -399,7 +401,7 @@ class StyleTransfer:
             if self.devices[0].type == 'cuda':
                 torch.cuda.empty_cache()
 
-            actual_its = initial_iterations if scale == scales[0] else iterations
+            actual_its = initial_iterations if index == 0 else iterations
             for i in range(1, actual_its + 1):
                 feats = self.model(self.image)
                 loss = crit(feats)
