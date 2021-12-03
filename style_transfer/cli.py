@@ -189,6 +189,8 @@ def main():
                    help='the relative scale of the style to the content')
     p.add_argument('--style-size', **arg_info('style_size'),
                    help='the fixed scale of the style at different content scales')
+    p.add_argument('--runs', **arg_info('runs'),
+                   help='if min and end-scale are the same, it can still be run multiple times')
     p.add_argument('--pooling', type=str, default='max', choices=['max', 'average', 'l2'],
                    help='the model\'s pooling mode')
     p.add_argument('--proof', type=str, default=None,

@@ -221,6 +221,7 @@ def gen_scales(start, end):
     return sorted(scales)
 
 
+
 def interpolate(*args, **kwargs):
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', UserWarning)
@@ -304,6 +305,7 @@ class StyleTransfer:
                 init: str = 'content',
                 style_scale_fac: float = 1.,
                 style_size: int = None,
+                runs: int = 3,
                 callback=None):
 
         min_scale = min(min_scale, end_scale)
@@ -321,6 +323,10 @@ class StyleTransfer:
 
         scales = gen_scales(min_scale, end_scale)
 
+        if(min_scale == end_scale and runs > 0):
+            scales = set([end_scale] * runs)          
+        
+       
         cw, ch = size_to_fit(content_image.size, scales[0], scale_up=True)
         if init == 'content':
             self.image = TF.to_tensor(content_image.resize((cw, ch), Image.LANCZOS))[None]
