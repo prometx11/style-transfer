@@ -324,7 +324,7 @@ class StyleTransfer:
         scales = gen_scales(min_scale, end_scale)
 
         if(min_scale == end_scale and runs > 0):
-            scales = set([end_scale] * runs)          
+            scales = sorted([end_scale] * runs)          
         
        
         cw, ch = size_to_fit(content_image.size, scales[0], scale_up=True)
